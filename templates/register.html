@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Реєстрація</title>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
+</script>
+<link rel="stylesheet" href={{ url_for('static', filename='css/login.css') }} />
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+  {% for message in get_flashed_messages() %}
+    <div>{{ message }}</div>	
+	{% endfor %}
+    <form class="register-form" action="/register" method="POST" onsubmit="return validate()">
+      <input type="password" placeholder="пароль"  id="password" name="password"/>
+	  <input type="password" placeholder=" підвердіть пароль" id="cpassword" name="password"/>	
+      <input type="text" placeholder="email" name="email"/>	  
+	  <input type="text" name="firstName" placeholder="Ім'я">
+	  <input type="text" name="lastName" placeholder="Прізвище">
+	  <input type="text" name="address1" placeholder="Поле адреси 2">
+	  <input type="text" name="address2" placeholder="Поле адреси 1">
+      <input type="text" name="zipcode" placeholder="Індекс">
+      <input type="text" name="city" placeholder="Місто">
+      <input type="text" name="phone" placeholder="Телефон">
+      <button>Створити</button>
+      <p class="message">Вже зареєстровані? <a href="/loginForm">Вхід</a></p>
+	  </div>
+</body>
+</html>
+
+

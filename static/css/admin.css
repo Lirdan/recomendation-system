@@ -1,0 +1,498 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.admin-panel {
+  display: flex;
+  height: 100%;
+}
+
+.admin-nav {
+  width: 200px;
+  background: #333;
+  color: white;
+  height: 100%;
+  padding: 20px;
+  position: fixed; /* Фиксированное позиционирование */
+}
+
+.admin-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-nav ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-left: 3px solid transparent;
+}
+
+.admin-nav ul li a:hover,
+.admin-nav ul li a:focus {
+  background: #444;
+  border-left: 3px solid #00bfff;
+}
+
+.admin-content {
+  flex-grow: 1;
+  margin-left: 240px; /* Отступ слева, равный ширине навигационной панели */
+}
+
+.admin-section {
+  display: none;
+}
+
+.admin-section:target {
+  display: block;
+}
+
+
+
+/* .form-group label {
+  display: block;
+  margin-bottom: 5px;
+} */
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group input[type="file"] {
+  border: none;
+}
+
+button {
+  background-color: #00bfff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #009fdd;
+}
+
+.stat-item {
+  margin-bottom: 20px;
+}
+
+.stat-count {
+  font-size: 2em;
+  color: #333;
+}
+
+.product-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.product-actions {
+  margin-left: 20px;
+}
+
+#genre-list {
+  margin-top: 20px;
+}
+
+.genre-item {
+  background: #f2f2f2;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.genre-name {
+  margin: 0;
+}
+
+.delete-btn,
+.edit-btn {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+}
+
+.delete-btn:hover {
+  background-color: #ff3333;
+}
+
+.edit-btn {
+  background-color: #ffa500;
+}
+
+.edit-btn:hover {
+  background-color: #ff8c00;
+}
+
+#genre-form {
+  margin-bottom: 20px;
+}
+
+#genre-form button {
+  background-color: #5cb85c;
+}
+
+#genre-form button:hover {
+  background-color: #4cae4c;
+}
+
+#product-genre,
+#edit-product-genre {
+  height: auto;
+  background: white;
+  border: 1px solid #ccc;
+}
+
+#product-genre option:checked,
+#edit-product-genre option:checked {
+  background-color: #e6e6e6;
+}
+
+#flash-messages {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.flash-message {
+  background-color: #f4f4f4;
+  border-left: 5px solid #31708f;
+  color: #31708f;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+}
+
+.flash-message + .flash-message {
+  margin-top: 10px;
+}
+
+
+
+/* Стили для элементов списка товаров и жанров */
+.product-item, .genre-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+/* Стили для названий товаров и жанров */
+.product-item .product-title, .genre-item .genre-name {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Стили для кнопок */
+.product-item button, .genre-item button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* Выравнивание кнопок "Редактировать" и "Удалить" */
+.edit-btn, .delete-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Стили для элементов списка жанров */
+.genre-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+/* Стили для названий жанров */
+.genre-item .genre-name {
+  flex-grow: 1;
+  margin-right: 10px; /* Добавляем отступ справа */
+}
+
+/* Контейнер для кнопок */
+.genre-item .genre-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Стили для кнопок в жанрах */
+.genre-item .genre-actions button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#product-list {
+  width: max-content;
+  max-width: 100%; /* Чтобы контейнер не выходил за пределы родительского элемента */
+}
+
+/* Стиль для контейнера жанров */
+.genre-list {
+  width: max-content;
+  max-width: 100%; /* Чтобы контейнер не выходил за пределы родительского элемента */
+}
+
+/* Стиль для элементов списка товаров и жанров */
+.product-item, .genre-item {
+  white-space: nowrap; /* Чтобы текст не переносился на новую строку */
+}
+
+
+/* Стили для формы добавления товаров */
+#product-form {
+  background-color: #f8f9fa; /* светлый фон */
+  border: 1px solid #dee2e6; /* тонкая граница */
+  border-radius: 5px; /* скругление углов */
+  padding: 20px; /* внутренний отступ */
+  max-width: 700px; /* максимальная ширина */
+  margin: 20px auto; /* центрирование и отступ сверху и снизу */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* легкая тень */
+}
+
+/* Стили для группы элементов формы */
+#add-product .form-group {
+  margin-bottom: 15px; /* отступ между группами */
+  display: flex; /* горизонтальное расположение элементов */
+  align-items: center; /* выравнивание элементов по центру */
+}
+
+/* Стили для меток в форме */
+#add-product .form-group label {
+  flex-basis: 20%; /* базовая ширина метки */
+  margin-right: 10px; /* отступ справа от метки */
+}
+
+/* Стили для элементов ввода */
+#add-product.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="url"], /* Для поля URL */
+.form-group textarea,
+.form-group select {
+  flex-grow: 1; /* элементы занимают оставшееся пространство */
+  padding: 8px; /* внутренний отступ */
+  border: 1px solid #ccc; /* граница */
+  border-radius: 4px; /* скругление углов */
+  box-sizing: border-box; /* включаем padding и border в общую ширину */
+}
+
+/* Специальные стили для поля описания, чтобы предотвратить смещение */
+#add-product.form-group textarea {
+  width: 100%; /* фиксированная ширина */
+  resize: vertical; /* разрешить изменение размера только вертикально */
+}
+
+/* Стили для кнопки отправки формы */
+#product-form button {
+  width: 100%; /* кнопка занимает всю ширину */
+  padding: 10px; /* внутренний отступ */
+  margin-top: 10px; /* отступ сверху */
+}
+
+/* Адаптивность для маленьких экранов */
+ @media (max-width: 600px) {
+ #product-form  .form-group {
+    flex-direction: column; /* элементы располагаются вертикально */
+  }
+
+ #product-form  .form-group label {
+    flex-basis: auto; /* метка занимает необходимое пространство */
+    margin-bottom: 5px; /* отступ снизу от метки */
+  }
+}
+#add-product h2 {
+  text-align: center; /* Выравнивание текста по центру */
+}
+
+
+/* Стили для группы элементов формы */
+#edit-products .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Стили для меток */
+#edit-products .form-group label {
+  width: 20%;
+  min-width: 150px;
+  margin-right: 10px;
+}
+
+/* Стили для элементов ввода */
+#edit-products .form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Стили для секции жанров */
+#edit-products .genre-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Стили для списка текущих жанров */
+#edit-products .genre-list {
+  display: flex;
+  gap: 10px;
+}
+
+/* Стили для выбора нового жанра и кнопки добавления */
+#edit-products .genre-select-group {
+  display: flex;
+  align-items: center;
+}
+
+#edit-products .genre-select-group select {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+#edit-products .add-genre {
+  padding: 10px 15px;
+  font-size: 1em;
+  flex-grow: 0;
+  width: auto;
+}
+
+/* Стили для группы кнопок */
+#edit-products .buttons-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#edit-products .buttons-group button {
+  flex-grow: 1;
+  margin: 0 5px;
+}
+
+.add{
+	display: flex;
+justify-content: space-between;
+width: 100%;
+}
+
+
+.admin-section {
+    padding: 20px;
+}
+
+.control-panel {
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.control-panel button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.control-panel button:hover {
+    background-color: #0056b3;
+}
+
+.chart-container {
+    width: 100%;
+   max-width: 1200px; /* Увеличенный размер для графика */ 
+    height: auto; /* Автоматическая высота для поддержки различных размеров графиков */
+    margin: 0 auto; /* Автоматические отступы слева и справа для центрирования */
+    text-align: center; 
+}
+
+
+
+/* Убедитесь, что элементы внутри контейнера графика также центрированы */
+.chart-container > * {
+    margin: 0 auto;
+    display: inline-block; /* Элементы отображаются в строке и центрируются */
+}
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.stat-item label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-count {
+    font-size: 1.5em;
+    color: #31708f;
+}
+
+.control-panel {
+    text-align: center;
+}
+
+.section-title {
+    text-align: center;
+}

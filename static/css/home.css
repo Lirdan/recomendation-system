@@ -1,0 +1,12 @@
+.display a {
+  color: #000; /* Цвет ссылки */
+  text-decoration: none; /* Убираем подчеркивание */
+}
+
+.display a:hover {
+  color: #ff0000; /* Цвет ссылки при наведении */
+  text-decoration: underline; /* Добавляем подчеркивание при наведении */
+}
+.display a:visited {
+  color: #000; /* Цвет посещенной ссылки */
+}

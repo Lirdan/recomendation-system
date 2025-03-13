@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html lang="ua">
+          <head>
+            <meta charset="utf-8">
+            <title>book</title>
+            <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=SF+Pro Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href={{ url_for('static', filename='css/styles1.css') }} />
+<link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }} />
+<link rel="stylesheet" href={{ url_for('static', filename='css/description.css') }} />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src={{ url_for('static', filename='js/cart.js') }}></script>
+<script src={{ url_for('static', filename='js/add.js') }}></script>
+<script src={{ url_for('static', filename='js/changeRating.js') }}></script>
+          </head>
+          
+          <body>
+<div class="wrapper">
+
+    <header class="header">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="/">
+            <span>
+              book
+            </span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+	 <form action="{{ url_for('search') }}" method="post">
+    <input type="search" name="query" id="searchBox" placeholder="щоб почитати (пошук за назваю, за автором)...">
+    <input type="submit" id="searchButton" value="Пошук">
+</form>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <div class="user_option">
+			{% if not loggedIn %}
+              <a href="/loginForm" id="cartLink" class="cart_link">
+                  <svg fill="#000000" width="24px" height="24px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<title>user</title>
+<path d="M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z"></path>
+</svg>
+				
+              </a>
+			  {% else %}			  
+			  <div class="profile-container">
+  <a href="#" class="profile-link">  
+  Привіт, {{firstName}}<svg fill="#000000" width="24px" height="24px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z"></path>
+</svg>
+                  <g>
+                    <g>
+                      <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                   C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                   c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                   C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                   c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                    </g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                </svg>
+              </a>
+			  
+  <div class="popup-window">
+    <a href="/account/profile">Переглянути профіль</a>
+    <a href="/logout">Вийти</a>
+  </div>
+</div>
+		{% endif %}	  
+              <a id="cartButton" class="cart_link"  href="#">
+			  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                  <g>
+                    <g>
+                      <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                   C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                   c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                   C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                   c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                    </g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                </svg>
+              </a>
+			  
+            </div>
+			
+          </div>
+        </nav>
+      </div>
+</header>
+
+<div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>кошик</h2>
+      <ul id="cartItems"></ul>
+	   <hr>
+      <p>Загальна вартість: <span id="totalPrice">0</span></p>
+	  <a href="/checkout" class="cart_link" id='checkout-button'><button id="cart_button">Сплатити</button></a>
+    </div>
+  </div>
+    <main class="main">
+	 
+<div class="book-container">
+        <div class="book-header">
+            <img src="{{data[4]}}" alt="Book Cover" class="book-cover">
+            <div class="book-info">
+                <h1>{{data[1]}}</h1>
+                <p><strong>Автор: </strong><a class="author_link" href="/handle_data?query={{data[6]}}">{{data[6]}} </a></p>
+                <p><strong>Ціна:</strong> {{data[2]}} ₴</p>
+                <p><strong>Рейтинг:</strong> {{data[5]}}</p>
+				 <p class="rate-invitation">Оцініть цю книгу!</p>
+                <div class="rating-section">
+                    <div class="rating" data-user-rating="{{data[7]}}">
+                        <span class="star" data-value="1" onmouseover="previewRating(1)" onmouseout="resetRating()" onclick="submitRating(1,{{data[0]}})">☆</span>
+                        <span class="star" data-value="2" onmouseover="previewRating(2)" onmouseout="resetRating()" onclick="submitRating(2,{{data[0]}})">☆</span>
+                        <span class="star" data-value="3" onmouseover="previewRating(3)" onmouseout="resetRating()" onclick="submitRating(3,{{data[0]}})">☆</span>
+                        <span class="star" data-value="4" onmouseover="previewRating(4)" onmouseout="resetRating()" onclick="submitRating(4,{{data[0]}})">☆</span>
+                        <span class="star" data-value="5" onmouseover="previewRating(5)" onmouseout="resetRating()" onclick="submitRating(5,{{data[0]}})">☆</span>
+                    </div>
+                </div>
+				 <p><strong>Жанри:</strong> 
+        {% for genre in genres %}
+            <a class="genre_link" href="/handle_data?query={{genre}}">{{genre}}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+                <a  class="addToCart" href="#" id="{{data[0]}}"><button class="add-to-cart" onclick="addToCart()">У кошик</button></a>
+                <p id="notification" style="color: green; display: none;">Рейтинг додано</p>
+            </div>
+        </div>
+        <p><strong>Опис:</strong> {{data[3]}}</p>
+    </div>
+  
+    </main>
+
+</div>
+	<footer class="footer">
+	<div class='logo'>
+	<h1 class="footer__logo">book</h1>   </div> 
+  <div class="footer__addr">
+    
+    
+    <h2>Контактні дані</h2>
+    
+    <address>
+      73033	  Göppingen, Georg-Boehringer-weg 70<br>
+          
+      <a class="footer__btn" href="mailto:derpy.mail17@gmail.com">Наш email</a>
+    </address>
+  </div>
+
+  <ul class="footer__nav">
+  
+    <li class="nav__item">
+	  
+      <h2 class="nav__title">Соціальні мережі</h2>
+
+      <ul class="nav__ul">
+        <li>
+          <a href="https://www.facebook.com/skrynnick.danil/">Facebook</a>
+        </li>
+
+        <li>
+          <a href="https://www.instagram.com/">Instagram</a>
+        </li>
+            
+        <li>
+          <a href="https://twitter.com/DanyaSkrynnik">Twitter</a>
+        </li>
+      </ul>
+ <li class="nav__item">
+      <h2 class="nav__title">Інформація</h2>
+      
+      <ul class="nav__ul">
+        <li>
+          <a href="/description">Про нас</a>
+        </li>
+        
+        <li>
+          <a href="#">Робота</a>
+        </li>
+        
+        <li>
+
+        </li>
+      </ul>
+    </li>	
+	</li>
+  </ul>
+  
+  <div class="legal">
+    <p>&copy; 2023  Скриник Даніїл. Всі права захищені</p>
+  </div>
+</footer>
+	
+          </body>
+          </html>

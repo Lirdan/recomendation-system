@@ -1,0 +1,85 @@
+.book-container {
+    max-width: 1500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.book-header {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+}
+.book-cover {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+}
+.book-info h1 {
+    margin-top: 0;
+}
+.rate-invitation {
+    margin: 20px 0 10px;
+    font-style: italic;
+}
+.rating-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.rating {
+    display: flex;
+    justify-content: start;
+    cursor: pointer;
+}
+.star {
+    font-size: 2em;
+    margin: 0 5px;
+    transition: color 0.3s;
+}
+
+.add-to-cart {
+    padding: 15px 25px;
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1.1em;
+}
+.add-to-cart:hover {
+    background-color: #0056b3;
+}
+a.addToCart
+{
+    color: inherit; /* или любой другой цвет, который вы хотите */
+
+    text-decoration: none;
+	transition: text-decoration 0.3s ease;
+}
+a.addToCart:hover,  a.add-to-cart:focus{
+text-decoration: underline !important;
+}
+a.author_link  
+{
+    color: inherit; /* или любой другой цвет, который вы хотите */
+    cursor: pointer;
+    text-decoration: none;
+	transition: text-decoration 0.3s ease;
+}
+a.author_link:hover,  a.author_link:focus{
+text-decoration: underline !important;
+}
+
+a.genre_link {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease;
+}
+a.genre_link:hover,  a.genre_link:focus {
+    text-decoration: underline !important;
+}

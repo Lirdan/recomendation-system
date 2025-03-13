@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>	Вхід </title>
+<link rel="stylesheet" href={{ url_for('static', filename='css/login.css') }} />
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+    {% for message in get_flashed_messages() %}
+    <div>{{ message }}</div>	
+	{% endfor %}
+    <form class="login-form" action="/login" method="POST">
+      <input type="text" placeholder="email" name="email"/>
+      <input type="password" placeholder="password" name="password"/>
+      <button>Вхід</button>
+      <p class="message">Ще не зареєстрований? <a href="/registerationForm">Створити аккаунт </a></p>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="ua">
+          <head>
+            <meta charset="utf-8">
+            <title>book</title>
+            <meta name="description" content="Figma htmlGenerator">
+            <meta name="author" content="htmlGenerator">
+            <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=SF+Pro Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href={{ url_for('static', filename='css/styles1.css') }} />
+<link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }} />
+<link rel="stylesheet" href={{ url_for('static', filename='css/login.css') }} />
+          </head>
+          
+          <body>
+<div class="wrapper">
+
+    
+    <main class="main">
+	  <div class="display">	
+<div class="login-page">
+<div class="form">
+<div class="header-h1"><h1 >Зміна даних профіля</h1></div>
+	<form action="/updateProfile" method="POST">
+		<label>email</label>
+		<input type="email" name="email" value={{profileData[1]}}  >
+		<label>Ім'я</label>
+		<input type="text" name="firstName" value={{profileData[2]}}>
+		<label>Прізвище</label>
+		<input type="text" name="lastName" value={{profileData[3]}}>
+		<label>Поле адреси 1</label>
+		<input type="text" name="address1" value={{profileData[4]}}>
+		<label>Поле адреси 2</label>
+		<input type="text" name="address2" value={{profileData[5]}}>
+		<label>Індекс</label>
+		<input type="text" name="zipcode" value={{profileData[6]}}>
+		<label>Місто</label>
+		<input type="text" name="city" value={{profileData[7]}}>
+		<label>Телефон</label>
+		<input type="text" name="phone" value={{profileData[8]}}>
+		<button>Зберегти</button>
+	</form>
+</div>
+</div>
+</div>
+	
+  
+    </main>
+
+</div>
+	
+	
+          </body>
+          </html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Адміністративна панель</title>
+<link rel="stylesheet" href={{ url_for('static', filename='css/admin.css') }} />
+<script src={{ url_for('static', filename='js/items.js') }}></script>
+{{ css_resources|safe }}
+</head>
+<body>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div id="flash-messages">
+      {% for message in messages %}
+        <div class="flash-message">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="admin-panel">
+  <nav class="admin-nav">
+  <p>Адміністратор {{ name }}</p>
+    <ul>
+      <li><a href="#stats">Статистика</a></li>
+      <li><a href="#add-product">Додавання товарів</a></li>
+      <li><a href="#edit-products">Редагування товарів</a></li>
+      <li><a href="#genres">Редагування жанрів</a></li>
+    </ul>
+  </nav>
+  <div class="admin-content">
+    <section id="stats" class="admin-section">
+      <h2 class="section-title">Статистика магазину</h2>
+          <div class="stats-container">
+        <div class="stat-item">
+            <label>Кількість замовлень:</label>
+            <span id="orders-count" class="stat-count">{{ order_count }}</span>
+        </div>
+        <div class="stat-item">
+            <label>Кількість користувачів:</label>
+            <span id="users-count" class="stat-count">{{ user_count }}</span>
+        </div>
+    </div>
+	      <div class="control-panel">
+        <button id="showPieChart">Показати розподіл рекомендацій</button>
+        <button id="showBarChart">Показати конверсію за типом рекомендацій</button>
+		<button id="showCTRChart">Показати CTR за типом рекомендацій</button>
+    </div>
+    <div id="chartContainer" class="chart-container">
+        {{ pie_chart_div|safe }}
+    </div>
+
+    <!-- Скрытые div для хранения скриптов Bokeh -->
+    <div id="pieChartScript" style="display: none; width: 80%; margin: auto;" >{{ pie_chart_script|safe }}</div>
+    <div id="barChartScript" style="display: none;  width: 80%; margin: auto;">{{ bar_chart_script|safe }}</div>
+	<div id="ctrChartScript" style="display: none;  width: 80%; margin: auto;">{{ ctr_chart_script|safe }}</div>
+	
+    </section>
+	<script>
+function resizeChart(chartName, containerId) {
+    var container = document.getElementById(containerId);
+    var containerWidth = container.offsetWidth;  // Получаем ширину контейнера
+
+    // Изменяем размер графика
+    Bokeh.documents[0].get_model_by_name(chartName).width = containerWidth;
+}
+
+// Вызываем функцию для каждого графика при загрузке страницы и при изменении размера окна
+window.onload = function() {
+    resizeChart('pie_chart', 'pieChartContainer');
+    resizeChart('bar_chart', 'barChartContainer');
+    resizeChart('ctr_chart', 'ctrChartContainer');
+};
+window.onresize = function() {
+    resizeChart('pie_chart', 'pieChartContainer');
+    resizeChart('bar_chart', 'barChartContainer');
+    resizeChart('ctr_chart', 'ctrChartContainer');
+};
+</script>
+	
+    <section id="add-product" class="admin-section">
+  <h2>Управління товарами</h2>
+  <form id="product-form"  method="POST" enctype="multipart/form-data">
+  
+    <div class="form-group">
+      <label for="product-genre">Допустимі жанри книг:</label>
+      <select id="product-genre" name="genre" multiple size="5">
+        {% for genre in genres %}
+        <option value="{{ genre.id }}">{{ genre.name }}</option>
+    {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="product-title">Назва:</label>
+      <input type="text" id="product-title" name="title" placeholder="Введіть назву книги">
+    </div>
+    <div class="form-group">
+      <label for="product-author">Автор:</label>
+      <input type="text" id="product-author" name="author" placeholder="Введіть ім'я автора">
+    </div>
+    <div class="form-group">
+      <label for="product-description">Опис:</label>
+      <textarea id="product-description" name="description" placeholder="Введіть опис книги"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="product-price">Ціна:</label>
+      <input type="number" id="product-price" name="price" placeholder="Вкажіть ціну" step="0.01">
+    </div>
+  <div class="form-group">
+      <label for="product-cover-url">Посилання на обкладинку:</label>
+      <input type="url" id="product-cover-url" name="cover_url" placeholder="Введіть URL обкладинки">
+    </div>
+    <button type="submit" name="add_product">Зберегти товар</button>
+  </form>
+</section>
+<section id="edit-products" class="admin-section">
+  <h2>Редагування товарів</h2>
+  <div id="product-list">
+    <!-- Список товаров -->
+    {% for product in books %}
+    <div class="product-item">
+      <span class="product-title">{{ product.name }}</span>
+      <!-- Кнопка для редактирования товара -->
+      <button type="button" onclick="showEditForm({{ product.id }})">Редагувати</button>
+	  <button onclick="deleteBook({{ product.id }})">Видалити</button>
+    </div>
+	<form id="edit-product-form-{{ product.id }}" style="display:none;
+	  background-color: #f8f9fa; 
+  border: 1px solid #dee2e6; 
+  border-radius: 5px; 
+  padding: 20px; 
+  margin-bottom: 20px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+	" method="post" action="{{ url_for('edit_product', product_id=product.id) }}">
+<!-- Поле для названия товара -->
+  <div class="form-group">
+    <label for="edit-product-title-{{ product.id }}">Назва</label>
+    <input type="text" id="edit-product-title-{{ product.id }}" name="title" value="{{ product.title }}" required>
+  </div>
+
+  <!-- Поле для автора товара -->
+  <div class="form-group">
+    <label for="edit-product-author-{{ product.id }}">Автор</label>
+    <input type="text" id="edit-product-author-{{ product.id }}" name="author" value="{{ product.author }}" required>
+  </div>
+
+  <!-- Поле для описания товара -->
+  <div class="form-group">
+    <label for="edit-product-description-{{ product.id }}">Опис</label>
+    <textarea id="edit-product-description-{{ product.id }}" name="description" required>{{ product.description }}</textarea>
+  </div>
+
+  <!-- Поле для цены товара -->
+  <div class="form-group">
+    <label for="edit-product-price-{{ product.id }}">Ціна</label>
+    <input type="number" id="edit-product-price-{{ product.id }}" name="price" value="{{ product.price }}" required>
+  </div>
+
+  <!-- Поле для URL изображения товара -->
+  <div class="form-group">
+    <label for="edit-product-image-url-{{ product.id }}">Посилання на обкладинку</label>
+    <input type="url" id="edit-product-image-url-{{ product.id }}" name="image_url" value="{{ product.image_url }}" required>
+  </div>
+
+  <!-- Раздел для жанров -->
+  <div class="form-group genre-group">
+    <label for="genre-select-{{ product.id }}">Існуючі жанри</label>
+    <div class="genre-list" id="genre-list-{{ product.id }}">
+      <!-- Отображение текущих жанров товара -->
+      {% for genre_id in product.genre_ids %}
+        {% set genre = all_genres|selectattr('id', 'equalto', genre_id)|first %}
+        <div class="genre-item" data-genre-id="{{ genre.id }}">
+          {{ genre.name }}
+          <button type="button" class="remove-genre">-</button>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="genre-select-group">
+      <select class="genre-select" id="genre-select-{{ product.id }}">
+        <!-- Заполните этот список всеми доступными жанрами -->
+        {% for genre in all_genres %}
+          {% if genre.id not in product.genre_ids %}
+            <option value="{{ genre.id }}">{{ genre.name }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <button type="button" class="add-genre" id="add-genre-{{ product.id }}">+</button>
+    </div>
+  </div>
+
+  <!-- Кнопки управления -->
+  <div class="form-group buttons-group">
+    <button type="submit">Зберегти зміни</button>
+    <button type="button" class="cancel-edit_book" onclick="cancelEdit_book('{{ product.id }}')">Відміна</button>
+  </div>
+</form>
+    {% endfor %}
+  </div>
+</section>
+<section id="genres" class="admin-section">
+    <h2>Управління жанрами</h2>
+
+    <!-- Форма для добавления нового жанра -->
+    
+    <!-- Список существующих жанров -->
+    <div class="genre-list">
+	 <div class="genre-item">
+	<form action="{{ url_for('add_genre') }}" method="post" class="add">
+        <div class="form-group">
+            <!-- <label for="genre-name">Назви жанрів</label> -->
+            <input type="text" id="genre-name" name="name" placeholder="Введіть назву жанру" required>
+        </div>
+		<div class="genre-actions">
+        <button type="submit" name="action" value="add">Додати жанр</button></div>
+    </form>
+	</div>
+    {% for genre in genres %}
+        <div class="genre-item" id="genre-{{ genre.id }}">
+            <span id="genre-name-{{ genre.id }}">{{ genre.name }}</span>
+			<div class="genre-actions">
+            <button type="button" onclick="editGenre({{ genre.id }})">Редагувати</button>
+            <form action="{{ url_for('delete_genre', genre_id=genre.id) }}" method="post">
+                <button type="submit">Видалити</button>
+            </form> 
+			</div>
+			<form id="edit-genre-form-{{ genre.id }}" action="{{ url_for('edit_genre', genre_id=genre.id) }}" method="post" style="display: none;">
+                <input type="text" name="name" value="{{ genre.name }}">
+                <button type="submit">Зберегти</button>
+                <button type="button" onclick="cancelEdit({{ genre.id }})">Відміна</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+</section>
+
+ 
+ 
+ 
+<!--  
+<section id="settings" class="admin-section">
+    <h2>Настройки сайта</h2>
+    <div class="control-panel">
+        <button id="showPieChart">Показать круговую диаграмму</button>
+        <button id="showBarChart">Показать столбчатую диаграмму</button>
+		<button id="showCTRChart">Показать CTR</button>
+    </div>
+    <div id="chartContainer" class="chart-container">
+        {{ pie_chart_div|safe }}
+    </div>
+
+    <!-- Скрытые div для хранения скриптов Bokeh 
+    <div id="pieChartScript" style="display: none;">{{ pie_chart_script|safe }}</div>
+    <div id="barChartScript" style="display: none;">{{ bar_chart_script|safe }}</div>
+	<div id="ctrChartScript" style="display: none;">{{ ctr_chart_script|safe }}</div>
+</section> -->
+
+
+<script>
+    function executeScript(scriptText) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.text = scriptText;
+        document.body.appendChild(script);
+    }
+
+    document.getElementById('showPieChart').addEventListener('click', function() {
+        var chartContainer = document.getElementById('chartContainer');
+        var pieChartScript = document.getElementById('pieChartScript').textContent;
+        chartContainer.innerHTML = `{{ pie_chart_div|safe }}`;
+        setTimeout(function() { executeScript(pieChartScript); }, 0);
+    });
+
+    document.getElementById('showBarChart').addEventListener('click', function() {
+        var chartContainer = document.getElementById('chartContainer');
+        var barChartScript = document.getElementById('barChartScript').textContent;
+        chartContainer.innerHTML = `{{ bar_chart_div|safe }}`;
+        setTimeout(function() { executeScript(barChartScript); }, 0);
+    });
+
+    document.getElementById('showCTRChart').addEventListener('click', function() {
+        var chartContainer = document.getElementById('chartContainer');
+        var ctrChartScript = document.getElementById('ctrChartScript').textContent;
+        chartContainer.innerHTML = `{{ ctr_chart_div|safe }}`;
+        setTimeout(function() { executeScript(ctrChartScript); }, 0);
+    });
+
+</script>
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+  </div>
+</div>
+<script>
+function editGenre(genreId) {
+    var genreItem = document.getElementById('genre-' + genreId);
+    var nameSpan = document.getElementById('genre-name-' + genreId);
+    var editForm = document.getElementById('edit-genre-form-' + genreId);
+
+    // Скрываем имя жанра и кнопку "Редактировать"
+    nameSpan.style.display = 'none';
+    genreItem.querySelector('button').style.display = 'none';
+
+    // Показываем форму редактирования
+    editForm.style.display = 'block';
+}
+
+function cancelEdit(genreId) {
+    var genreItem = document.getElementById('genre-' + genreId);
+    var nameSpan = document.getElementById('genre-name-' + genreId);
+    var editForm = document.getElementById('edit-genre-form-' + genreId);
+
+    // Скрываем форму редактирования
+    editForm.style.display = 'none';
+
+    // Показываем имя жанра и кнопку "Редактировать"
+    nameSpan.style.display = 'inline';
+    genreItem.querySelector('button').style.display = 'inline';
+}
+
+</script>
+<script>
+// Перебираем все flash-сообщения
+document.querySelectorAll('.flash-message').forEach(function(message) {
+  // Устанавливаем таймер на 5 секунд
+  setTimeout(function() {
+    // Плавно скрываем сообщение
+    message.style.opacity = '0';
+    // Через 500 мс после начала исчезновения удаляем элемент
+    setTimeout(function() {
+      message.remove();
+    }, 500);
+  }, 5000); // время в миллисекундах, через которое сообщение исчезнет (5000 мс = 5 с)
+});
+
+</script>
+{{ js_resources|safe }}
+</body>
+</html>

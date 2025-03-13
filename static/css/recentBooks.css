@@ -1,0 +1,57 @@
+.display {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-links {
+    margin-bottom: 20px;
+}
+
+.remove a {
+    display: block;
+    margin-bottom: 10px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.orders-section {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+}
+
+#recently-bought-books {
+    list-style-type: none;
+    padding: 0;
+}
+
+#recently-bought-books li {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#recently-bought-books img {
+    margin-right: 10px;
+}
+
+#show-all-books, #hide-books {
+    background-color: orange;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#show-all-books:hover, #hide-books:hover {
+    background-color: #0056b3;
+}
