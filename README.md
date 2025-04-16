@@ -53,14 +53,11 @@ Each recommendation strategy is considered an "arm" of the bandit:
 - collaborative
 - genre
 
-The algorithm uses UCB1 to calculate the value of each strategy:
-
-\[
-UCB = \text{average reward} + \alpha \cdot \sqrt{ \frac{ \ln N }{ n_i } }
-\]
+**UCB formula:**  
+UCB = average_reward + α × √(ln(N) / nᵢ)
 
 Where:
-- `n_i` = how many times strategy `i` was used  
+- `nᵢ` = how many times strategy `i` was used  
 - `N` = total number of recommendations shown  
 - `α` = confidence parameter (0.75)  
 - `reward = 1.0` if the user bought the book
