@@ -1,62 +1,77 @@
+/**
+ * Script for managing the cart modal window and its contents.
+ *
+ * Features:
+ * - Opens the cart modal when the cart button is clicked
+ * - Fetches current cart items from the Flask server via /cart_data
+ * - Displays the list of cart items with their names and prices
+ * - Allows users to remove items from the cart dynamically via /remove_from_cart
+ * - Updates total price and checkout button status on any change
+ * - Handles closing the modal (both via close button and outside click)
+ *
+ * Dependencies:
+ * - HTML elements with IDs: cartButton, cartModal, cartItems, totalPrice, checkout-button
+ * - Flask backend routes: /cart_data, /remove_from_cart
+ */
 document.addEventListener("DOMContentLoaded", function() {
+  // DOM references
   var cartButton = document.getElementById("cartButton");
   var cartModal = document.getElementById("cartModal");
   var closeButton = document.getElementsByClassName("close")[0];
   var cartItems = document.getElementById("cartItems");
   var totalPrice = document.getElementById("totalPrice");
   var checkoutButton = document.getElementById("checkout-button");
+  // Open cart modal and populate items
   cartButton.addEventListener("click", function() {
-    cartModal.style.display = "block";
+  cartModal.style.display = "block";
 	
-    // Отправить запрос на сервер Flask для получения данных корзины
-    // и заполнить список товаров и общую стоимость
+    // Fetch cart items from Flask server
     fetch("/cart_data") 
       .then(response => response.json())
       .then(data => {
-        // Очистить список товаров
+        // Clear previous items
         cartItems.innerHTML = "";
 
-        // Заполнить список товаров
+        // Render each cart item
         data.items.forEach(item => {
           var listItem = document.createElement("li");
           listItem.innerHTML = item.name + " - " + item.price;
           var removeButton = document.createElement("button");
           removeButton.innerHTML = "-";
-		  removeButton.classList.add("removeButtonClass");
-
+	  removeButton.classList.add("removeButtonClass");
+          // Handle click on remove button
           removeButton.addEventListener("click", function() {
-           				
-	
-	  
-  // Отправить запрос на сервер Flask для удаления товара
+           					  
+  // Send request to Flask to remove item
   fetch("/remove_from_cart", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ id: item.id }) // Передаем идентификатор товара, который нужно удалить
+    body: JSON.stringify({ id: item.id }) // Send item ID to remove
   })
     .then(response => response.json())
     .then(data => {
-      // Если товар успешно удален, обновляем список товаров и общую стоимость
+     // If the product has been successfully deleted, update the list of products and the total cost
       if (data.message === "Товар успішно видалео з кошика.") {
-        listItem.remove(); // Удаляем элемент из списка
-        updateTotalPrice(); // Обновляем общую стоимость
+        listItem.remove(); // Remove item from DOM
+        updateTotalPrice(); // Update price and checkout state
       }
     })
     .catch(error => {
       console.error("Ошибка удаления товара из корзины:", error);
     });								
-          });			  
-		  function updateTotalPrice() {
-  // Отправить запрос на сервер Flask для получения данных корзины
-  // и обновить общую стоимость
+          });	
+// Function to recalculate and update total price
+function updateTotalPrice() {
+  // Send a request to the Flask server to receive the bucket data
+  // and update the total cost
   fetch("/cart_data")
     .then(response => response.json())
     .then(data => {
-      // Обновить общую стоимость
+      // Update checkout button
       totalPrice.innerHTML = data.totalPrice;
-	  checkCartEmpty();
+      checkCartEmpty();
     })
     .catch(error => {
       console.error("Ошибка получения данных корзины:", error);
@@ -66,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
           cartItems.appendChild(listItem);
         });
 
-        // Заполнить общую стоимость
+        // Set total price
         totalPrice.innerHTML = data.totalPrice;
       })
       .catch(error => {
@@ -75,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   
-  
+  // Enable/disable checkout button based on cart contents
   function checkCartEmpty() {
     fetch("/cart_data")
       .then(response => response.json())
@@ -96,16 +111,19 @@ document.addEventListener("DOMContentLoaded", function() {
   
 
   
-  
+  // Close modal when X is clicked
   closeButton.addEventListener("click", function() {
     cartModal.style.display = "none";
   });
 
+  // Close modal when clicking outside the modal
   window.addEventListener("click", function(event) {
     if (event.target == cartModal) {
       cartModal.style.display = "none";
     }
   });
+
+   // Initial state check on load
   checkCartEmpty();
 });
 
