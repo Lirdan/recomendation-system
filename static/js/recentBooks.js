@@ -1,12 +1,23 @@
+/**
+ * Script to handle dynamic display of all purchased books on profile page.
+ *
+ * Features:
+ * - Loads all purchased books via AJAX when "Show All" is clicked
+ * - Hides the button after loading, and shows a "Hide" button
+ * - Clicking "Hide" simply reloads the page to restore initial state
+ */
+
 window.onload = function() {
+    // DOM elements
     const showAllBooksButton = document.getElementById('show-all-books');
     const hideBooksButton = document.getElementById('hide-books');
     const booksList = document.getElementById('recently-bought-books');
-
+    // Show all purchased books
     showAllBooksButton.addEventListener('click', function() {
-        fetch('/api/all-books')
+        fetch('/api/all-books') // Fetch books via Flask API
         .then(response => response.json())
         .then(data => {
+	    // Clear the current list
             booksList.innerHTML = '';
             data.forEach(book => {
                 let listItem = document.createElement('li');
@@ -17,6 +28,7 @@ window.onload = function() {
                 `;
                 booksList.appendChild(listItem);
             });
+	    // Toggle button visibility
             showAllBooksButton.style.display = 'none';
             hideBooksButton.style.display = 'block';
         })
@@ -24,9 +36,9 @@ window.onload = function() {
             console.error('Error fetching books:', error);
         });
     });
-
+    // Hide books by reloading the page
     hideBooksButton.addEventListener('click', function() {
-        // Здесь мы просто перезагружаем страницу, чтобы вернуться к первоначальному состоянию
+        // Reset view to original state
         location.reload();
     });
 };
